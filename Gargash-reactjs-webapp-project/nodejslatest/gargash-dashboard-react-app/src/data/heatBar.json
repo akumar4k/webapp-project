@@ -1,0 +1,74 @@
+{
+  "data": [
+    {
+      "name": "M",
+      "idle": -20,
+      "drive": 24
+    },
+    {
+      "name": "T",
+      "idle": -30,
+      "drive": 24
+    },
+    {
+      "name": "W",
+      "idle": -20,
+      "drive": 90
+    },
+    {
+      "name": "T",
+      "idle": -28,
+      "drive": 39
+    },
+    {
+      "name": "F",
+      "idle": -19,
+      "drive": 48
+    },
+    {
+      "name": "S",
+      "idle": -32,
+      "drive": 38
+    },
+    {
+      "name": "S",
+      "idle": -34,
+      "drive": 43
+    },
+    {
+      "name": "M",
+      "idle": -20,
+      "drive": 24
+    },
+    {
+      "name": "T",
+      "idle": -30,
+      "drive": 13
+    },
+    {
+      "name": "W",
+      "idle": -20,
+      "drive": 98
+    },
+    {
+      "name": "T",
+      "idle": -76,
+      "drive": 39
+    },
+    {
+      "name": "F",
+      "idle": -19,
+      "drive": 38
+    },
+    {
+      "name": "S",
+      "idle": -23,
+      "drive": 38
+    },
+    {
+      "name": "S",
+      "idle": -34,
+      "drive": 43
+    }
+  ]
+}

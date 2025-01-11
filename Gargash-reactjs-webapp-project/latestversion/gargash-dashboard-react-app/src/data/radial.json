@@ -1,0 +1,75 @@
+{
+  "data": [
+    {
+      "id": "ICE",
+      "legend": [
+        { "name": "ICE", "value": 102 },
+        { "name": "none", "value": 0 }
+      ],
+      "color": "#0D57CC ",
+      "data": [
+        {
+          "x": "ice",
+          "y": 102
+        }
+      ]
+    },
+    {
+      "id": "BVE",
+      "legend": [
+        { "name": "BVE", "value": 11 },
+        { "name": "none", "value": 93 }
+      ],
+      "color": "#C98CF4",
+      "data": [
+        {
+          "x": "bve",
+          "y": 11
+        }
+      ]
+    },
+
+    {
+      "id": "PHEv",
+      "legend": [
+        { "name": "PHEv", "value": 40 },
+        { "name": "none", "value": 62 }
+      ],
+      "color": "#63428E",
+      "data": [
+        {
+          "x": "PHEv",
+          "y": 40
+        }
+      ]
+    },
+    {
+      "id": "REx",
+      "legend": [
+        { "name": "REx", "value": 55 },
+        { "name": "none", "value": 47 }
+      ],
+      "color": "#A735DA",
+      "data": [
+        {
+          "x": "REx",
+          "y": 55
+        }
+      ]
+    },
+    {
+      "id": "HEV",
+      "legend": [
+        { "name": "HEV", "value": 76 },
+        { "name": "none", "value": 26 }
+      ],
+      "color": "#23C2ED",
+      "data": [
+        {
+          "x": "HEV",
+          "y": 76
+        }
+      ]
+    }
+  ]
+}

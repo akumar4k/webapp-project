@@ -1,0 +1,44 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+variables:
+  branch: ''  # This variable will store the selected branch name
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '8367b004-e30f-450a-8ce0-411215c2d46f'
+  imageRepository: 'gargashdashboardreactapp'
+  containerRegistry: 'gargashdashboardreactappacr.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+trigger:
+ branches:
+  - $(branch)
+
+resources:
+- repo: self
+
+
+  
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)

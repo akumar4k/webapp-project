@@ -1,0 +1,49 @@
+{
+  "name": "gargash-dashboard",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --open --host",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
+    "@googlemaps/react-wrapper": "^1.1.35",
+    "@nivo/core": "^0.86.0",
+    "@nivo/line": "^0.86.0",
+    "@nivo/radar": "^0.86.0",
+    "@nivo/radial-bar": "^0.86.0",
+    "@turf/rhumb-bearing": "^6.5.0",
+    "@turf/rhumb-distance": "^6.5.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.8",
+    "atmosphere.js": "^4.0.0",
+    "deck.gl": "^9.0.12",
+    "lodash": "^4.17.21",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-dropdown": "^1.11.0",
+    "react-geocode": "^1.0.0-alpha.1",
+    "react-router-dom": "^6.23.0",
+    "react-tabs": "^6.0.2",
+    "recharts": "^2.12.6",
+    "recoil": "^0.7.7",
+    "recoil-nexus": "^0.5.0",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^9.1.1",
+    "postcss": "^8.4.38",
+    "sass": "^1.76.0",
+    "tailwindcss": "^3.4.3",
+    "vite": "^5.2.11",
+    "vite-plugin-top-level-await": "^1.4.1"
+  }
+}

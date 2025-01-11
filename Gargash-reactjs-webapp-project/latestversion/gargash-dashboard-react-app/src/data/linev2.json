@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "name": "Jan",
+      "ICE": 20,
+      "BEV": 10
+    },
+    {
+      "name": "Feb",
+      "ICE": 40,
+      "BEV": 40
+    },
+    {
+      "name": "Mar",
+      "ICE": 25,
+      "BEV": 34
+    },
+    {
+      "name": "Jun",
+      "ICE": 55,
+      "BEV": 40
+    },
+    {
+      "name": "Jul",
+      "ICE": 70,
+      "BEV": 60
+    }
+  ]
+}

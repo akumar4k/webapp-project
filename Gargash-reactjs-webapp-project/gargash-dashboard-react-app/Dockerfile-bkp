@@ -1,0 +1,39 @@
+# Stage 1: Build stage
+ARG DISTRO="3.19"
+ARG WORKING_PATH="/app"
+ARG EXECUTABLE_BINARIE="reactapp"
+
+
+FROM node:current-alpine AS build
+ARG WORKING_PATH
+ARG DISTRO
+ARG EXECUTABLE_BINARIE
+
+WORKDIR ${WORKING_PATH}
+COPY . .
+RUN npm install &&\ 
+    npm run build
+
+
+#FROM scratch
+FROM node:current-alpine AS production 
+ARG WORKING_PATH
+ARG DISTRO
+ARG EXECUTABLE_BINARIE
+
+WORKDIR ${WORKING_PATH}
+
+COPY --from=build ${WORKING_PATH}/package*.json ./
+COPY --from=build ${WORKING_PATH}/dist ./dist
+#COPY --from=build ${WORKING_PATH} ./app
+# # Install only production dependencies
+ #RUN npm install --only=scratch
+RUN npm install --only=production
+ 
+COPY . .
+# Expose the port the app runs on
+EXPOSE 5173
+
+# # Command to run the application#
+#CMD ["node", "dev"]
+CMD ["npm", "run","preview"]

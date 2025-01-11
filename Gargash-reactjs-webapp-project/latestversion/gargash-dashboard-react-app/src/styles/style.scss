@@ -1,0 +1,381 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// Variables for colors and common values
+$tooltip-background: #160e2d;
+$icon-background: #3c3f54;
+$map-background: #1e2126;
+$gauge-border-color: #ffffff;
+$shadow-soft: 0 4px 8px rgba(0, 0, 0, 0.1);
+$shadow-depth: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+#root {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo {
+  padding: 2.5em;
+  will-change: filter;
+  transition: filter 300ms;
+
+  &:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+
+    &.react:hover {
+      filter: drop-shadow(0 0 2em #61dafbaa);
+    }
+  }
+}
+.gmnoprint,
+.gmnoscreen {
+  display:none;
+}
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+button.gm-control-active {
+  background-color: #441759 !important;
+
+  img {
+    filter: brightness(0) invert(1) !important;
+  }
+}
+
+#map {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.main-frame {
+  display: flex;
+  margin-left: -6px;
+}
+
+.side-bar {
+  width: 162px;
+}
+
+#tooltip {
+  &.active {
+    z-index: 10;
+  }
+
+  opacity: 0;
+  color: white;
+  position: absolute;
+  margin: 10px;
+  padding: 10px;
+  display: none;
+  z-index: -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 38%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: $tooltip-background;
+  border-radius: 15px;
+  box-shadow: $shadow-soft;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid $tooltip-background;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.car-info {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  background: white;
+  width: 175px;
+  border: 3px;
+  border: 4px solid #b2a7dc;
+  border-radius: 10px;
+  padding: 5px;
+  .car-model {
+    position: relative;
+    top: 14px;
+    left: 26px;
+  }
+
+  > * {
+    flex: 0 1 auto;
+  }
+
+  img {
+    width: 65%;
+    height: auto;
+    border-radius: 10px;
+    background: white;
+  }
+  .plate {
+    width: 100%;
+  }
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  .icon {
+    background: $icon-background;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+}
+
+.map-container {
+  text-align: center;
+
+  .map {
+    background-color: $map-background;
+    border-radius: 10px;
+    height: 200px;
+  }
+}
+
+.driver-info {
+  align-items: center;
+  text-align: center;
+
+  img {
+    height: 80px;
+  }
+}
+
+.speedometer {
+  background: $tooltip-background;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.gauge-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 5px;
+}
+
+.gauge {
+  width: 15px;
+  height: 200px;
+  background: #e6e6e6;
+  border-radius: 25px;
+  position: relative;
+  border: 2px solid $gauge-border-color;
+  box-shadow: $shadow-depth;
+  overflow: hidden;
+
+  .gauge-level {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(
+      to top,
+      #ff4330 0%,
+      /* Red */ #ff4e34 5%,
+      /* Blend between red and next color */ #ff5a38 10%,
+      /* Blend */ #ff653c 15%,
+      /* Blend */ #ff713f 20%,
+      /* Blend */ #ff7d43 25%,
+      /* Blend */ #ff8a47 30%,
+      /* Blend */ #ff964b 35%,
+      /* Blend */ #ff9f4f 40%,
+      /* Blend */ #ffad53 45%,
+      /* Blend */ #ffb757 50%,
+      /* Yellow */ #c7c05a 55%,
+      /* Blend between yellow and next color */ #90c95d 60%,
+      /* Blend */ #58d161 65%,
+      /* Blend */ #21d964 70%,
+      /* Blend */ #09dc68 75%,
+      /* Blend */ #00df6b 80%,
+      /* Blend */ #00e06f 85%,
+      /* Blend */ #00e172 90%,
+      /* Blend */ #00e376 95%,
+      /* Blend */ #00b625 100% /* Green */
+    );
+  }
+
+  .separator {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+    z-index: 2;
+  }
+}
+
+.mock-image {
+  img {
+    height: auto;
+    border-radius: 10px;
+    background: white;
+  }
+}
+
+.icon {
+  width: 41px !important;
+}
+
+.logout {
+  border: none;
+  position: absolute;
+  bottom: 0;
+  background: #78358c;
+  left: 40px;
+  color: lightgray;
+  margin-top: 21px;
+  font-weight: bold;
+}
+
+.address {
+  padding: 13px 0;
+}
+
+.status {
+  color: black;
+  position: relative;
+  background: white;
+  width: 4rem;
+  height: 27px;
+  left: 73px;
+  margin: 0;
+  top: 42px;
+  font-weight: bold;
+}
+
+.sidebar {
+  border-right: 9px solid #401654;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #78358c;
+  color: white;
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+  h1 {
+    padding: 6px 16px;
+    text-decoration: none;
+    font-size: 35px;
+    color: white;
+    display: block;
+  }
+  &-nav {
+    list-style-type: none;
+    padding-left: 3rem;
+    padding-top: 3rem;
+  }
+}
+
+.nav-item {
+  display: flex;
+  text-align: left;
+  padding: 1px 0;
+  list-style: none;
+  font-size: 14px;
+  width: 13rem;
+
+  a {
+    display: inline-block;
+    line-height: 41px;
+    vertical-align: middle;
+    color: white;
+    text-decoration: none;
+    &:hover {
+      background-color: gray;
+    }
+  }
+  .link {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: white;
+    border-bottom: 2px solid transparent;
+  }
+
+  .link.active {
+    border-bottom: 2px solid white;
+  }
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  text-align: center;
+  color: white;
+}
+
+.status-circle {
+  height: 20px;
+  width: 20px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 9px;
+  vertical-align: middle;
+}
+
+.status-text {
+  display: grid;
+  height: 60px;
+  p {
+    display: inline;
+    margin: 0;
+    font-size: 14px;
+    line-height: 21px;
+  }
+  .logout {
+    cursor: pointer;
+    text-align: center;
+    position: static;
+  }
+}

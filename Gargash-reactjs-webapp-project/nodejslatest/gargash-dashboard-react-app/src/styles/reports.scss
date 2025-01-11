@@ -1,0 +1,168 @@
+.reports {
+  height: 100vh;
+  &-wrap {
+    background-color: rgba(23, 32, 71, 0.5);
+    border: 1px solid #374262;
+    border-radius: 8px;
+    .title {
+      text-align: left;
+      padding: 1.2rem;
+      color: white;
+      border-bottom: 1px solid #374262;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 1rem;
+    }
+  }
+  &.grid {
+    padding-bottom: 9rem;
+    margin: 3rem;
+  }
+}
+
+.nivo-special {
+  height: 66%;
+  &.radar {
+    height: 80%;
+  }
+  &.line {
+    .dropdown-wrapper {
+      padding-bottom: 1rem;
+      padding-right: 15rem;
+    }
+  }
+  &.heatbar {
+    height: 90%;
+  }
+  &.line {
+    height: 90%;
+    &.basic {
+      height: 65%;
+    }
+  }
+  text {
+    font-weight: bold !important;
+  }
+  .text {
+    color: #f9cf1c;
+    font-weight: bold;
+    float: left;
+    font-size: 15px;
+    padding: 0 1.2rem;
+    margin-bottom: 6px;
+  }
+  .dropdown {
+    color: white;
+    width: 50%;
+    &-wrapper {
+      display: flex;
+      gap: 2rem;
+      margin: 0 1rem;
+    }
+    label {
+      color: #f9cf1c;
+      font-weight: bold;
+      text-align: left;
+      font-size: 15px;
+      display: block;
+      margin-bottom: 6px;
+    }
+  }
+  .Dropdown-control {
+    display: flex;
+    align-items: center;
+    background-color: #363553;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+  }
+  .Dropdown-menu {
+    background-color: #363553;
+    padding: 10px;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+    .Dropdown-option {
+      color: white;
+      &.is-selected,
+      &:hover {
+        color: gray;
+      }
+    }
+  }
+}
+
+.vehicle-counter {
+  position: fixed;
+  color: white;
+  top: 51%;
+  left: 31.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+
+  .label {
+    font-family: 'Arial', sans-serif;
+    font-size: 19px;
+    color: #f9cf1c;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .number {
+    font-family: 'Arial', sans-serif;
+    font-size: 55px;
+    font-weight: bold;
+  }
+}
+.legend {
+  width: 70%;
+  height: 60px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: auto;
+  margin-left: 16%;
+  justify-content: center;
+  &-item {
+    flex: 1 1 200px;
+    margin: 0 0.4rem;
+  }
+  p {
+    width: 64px;
+    color: #f9cf1c;
+    font-weight: bold;
+  }
+}
+.react-tabs {
+  background: linear-gradient(to right, rgba(0, 20, 50, 1), rgba(24, 21, 88, 1));
+  text {
+    fill: white !important;
+  }
+  &__tab-list {
+    padding: 1rem 0rem 0rem 2.2rem !important;
+    text-align: left;
+    border-bottom: none !important;
+  }
+  &__tab {
+    font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    &:focus:after {
+      background: #78358c !important;
+    }
+  }
+  &__tab--selected {
+    background: none !important;
+    color: white !important;
+    border: none !important;
+  }
+}

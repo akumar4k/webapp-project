@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "type": "Tailpipe emissions",
+      "BVE": 45,
+      "ICE": 94,
+      "HEV": 0,
+      "PHEV": 20,
+      "REx": 13
+    },
+    {
+      "type": "Vehicle Manufacturing",
+      "BVE": 86,
+      "ICE": 48,
+      "HEV": 69,
+      "PHEV": 70,
+      "REx": 70
+    },
+    {
+      "type": "End of Life Emissions",
+      "BVE": 30,
+      "ICE": 118,
+      "HEV": 89,
+      "PHEV": 10,
+      "REx": 20
+    },
+    {
+      "type": "Battery Production",
+      "BVE": 84,
+      "ICE": 67,
+      "HEV": 20,
+      "PHEV": 40,
+      "REx": 13
+    },
+    {
+      "type": "Fuel/electricity Production",
+      "BVE": 95,
+      "ICE": 40,
+      "HEV": 32,
+      "PHEV": 10,
+      "REx": 40
+    }
+  ]
+}
