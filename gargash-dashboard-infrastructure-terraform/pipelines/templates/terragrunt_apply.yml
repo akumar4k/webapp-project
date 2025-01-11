@@ -1,0 +1,120 @@
+---
+parameters:
+  - name: module
+    type: string
+  - name: environment
+    type: string
+  # - name: azure_client_id
+  #   type: string
+  # - name: azure_client_secrets
+  #   type: string
+  - name: subscription
+    type: string
+  # - name: azure_tenant_id
+  #   type: string
+  - name: backend_resource_group
+    type: string
+  - name: backend_storage_account_name
+    type: string
+  - name: backend_storage_container_name
+    type: string
+  - name: tf_backend_key
+    type: string
+  - name: application_name
+    type: string
+  - name: dependsOnTfModules
+    type: object
+    default: []
+
+jobs:
+  - job: plan_terraform_${{parameters.module}}
+    displayName: ${{parameters.module}} generate Terraform Plan
+    ${{ if parameters.dependsOnTfModules }}:
+      dependsOn:
+        - ${{ each module in parameters.dependsOnTfModules }}:
+            - apply_terraform_${{ module }}
+
+    steps:
+      - checkout: self
+        displayName: 'auth'
+        persistCredentials: true
+
+      - script: |
+          git config --global url."https://$SYSTEM_ACCESSTOKEN@dev.azure.com".insteadOf "https://Gargash-AzureDevOps@dev.azure.com"
+        displayName: 'set extra header'
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+      - template: terragrunt_init.yml
+        parameters:
+          subscription: ${{parameters.subscription}}
+
+      - bash: |
+          # git config --global http.https://dev.azure.com/Gargash-AzureDevOps/Gargash%20Dashboard/_git/terraform-azurerm-vnet.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
+          # git config --global git@ssh.dev.azure.com:v3/Gargash-AzureDevOps/Gargash%20Dashboard/terraform-azurerm-vnet.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
+          # git config --global url."https://$SYSTEM_ACCESSTOKEN@dev.azure.com".insteadOf "https://Gargash-AzureDevOps@dev.azure.com"
+          # git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push
+          PLAN_PATH='$(System.DefaultWorkingDirectory)/environments/${{parameters.environment}}/${{parameters.module}}/tf.plan'
+          (terragrunt plan -out $PLAN_PATH --detailed-exitcode) || error_code=$?
+          if [[ "${error_code}" -eq 1 ]]; then
+            exit 1
+          fi
+          if [[ "${error_code}" -eq 2 ]]; then
+            echo "##vso[task.logissue type=warning]Plan '${{parameters.module}}' has changes on ${{parameters.environment}}"
+            echo "##vso[task.setvariable variable=PLAN_PATH;isOutput=true]$PLAN_PATH";
+            echo "##vso[task.setvariable variable=HAS_PLAN;isOutput=true]true";
+          fi
+
+        displayName: "!!! Plan ${{parameters.module}} !!!"
+        name: vars
+        workingDirectory: $(System.DefaultWorkingDirectory)/environments/${{parameters.environment}}/${{parameters.module}}
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(System.DefaultWorkingDirectory)/environments/${{parameters.environment}}/${{parameters.module}}/tf.plan'
+          artifact: '${{parameters.environment}}_${{parameters.module}}'
+          publishLocation: 'pipeline'
+
+  - job: manual_plan_validation_${{parameters.module}}_${{parameters.environment}}
+    displayName: ${{parameters.environment}} ${{parameters.module}} validate plan
+    dependsOn: plan_terraform_${{parameters.module}}_${{parameters.environment}}
+    pool: server
+    variables:
+      HAS_PLAN: $[dependencies.plan_terraform_${{parameters.module}}.outputs['vars.HAS_PLAN']]
+
+    steps:
+      - task: ManualValidation@0
+        condition: eq(variables['HAS_PLAN'], 'true')
+        timeoutInMinutes: 60
+        inputs:
+          notifyUsers: |
+            bun.camara@transformuk.com
+          instructions: 'Please validate terraform plans before applying the changes'
+          onTimeout: 'reject'
+
+  - job: apply_terraform_${{parameters.module}}__${{parameters.environment}}
+    displayName: ${{parameters.environment}} ${{parameters.module}} terraform apply
+    timeoutInMinutes: 120 # Some resources (e.g. APIM) take more than 60 minutes to apply
+    dependsOn:
+      - manual_plan_validation_${{parameters.module}}_${{parameters.environment}}
+    variables:
+      HAS_PLAN: $[dependencies.plan_terraform_${{parameters.module}}.outputs['vars.HAS_PLAN']]
+
+    steps:
+      - template: ../templates/terragrunt_init.yml
+        parameters:
+          subscription: ${{parameters.subscription}}
+
+      # Download artifact published in plan job
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: '${{parameters.environment}}_${{parameters.module}}'
+          targetPath: '$(Pipeline.Workspace)/${{parameters.environment}}_${{parameters.module}}'
+
+      - bash: |
+          ls -la /home/vsts/work/1/development_applications/
+          # terragrunt apply /home/vsts/work/1/development_applications/*
+          terragrunt apply $(Pipeline.Workspace)/${{parameters.environment}}_${{parameters.module}}/tf.plan
+        displayName: "!!! ${{parameters.environment}}- TERRAFORM APPLY ${{parameters.module}} !!!"
+        condition: eq(variables['vars.HAS_PLAN'], 'true')

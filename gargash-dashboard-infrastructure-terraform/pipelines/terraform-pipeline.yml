@@ -1,0 +1,87 @@
+---
+trigger:
+  branches:
+    exclude:
+    - '*'
+
+pr:
+  branches:
+    include:
+      - '*'
+
+pool:
+  vmImage: ubuntu-20.04
+
+resources:
+  repositories:
+  - repository: "terraform-azurerm-vnet"
+    type: git
+    name: "Gargash Dashboard/terraform-azurerm-vnet"
+    ref: main
+    # endpoint:
+
+
+variables:
+  - group: dev-env-vars
+
+jobs:
+  # - template: templates/authenticate_tf_module.yml
+  #   parameters:
+  #     environment: development
+
+  - template: templates/terragrunt_apply.yml
+    parameters:
+      environment: development
+      module: base
+      subscription: TerraformDevConnection
+      # azure_client_secrets: $(azure_client_secrets)
+      # azure_tenant_id: $(azure_tenant_id)
+      # azure_client_id: $(azure_client_id)
+      backend_resource_group: $()
+      backend_storage_account_name: "gargash_dashboard_tfstate"
+      backend_storage_container_name: $(tfstate)
+      tf_backend_key: $(tfstate)
+      application_name: "base"
+
+  - template: templates/terragrunt_apply.yml
+    parameters:
+      environment: development
+      module: applications
+      subscription: TerraformDevConnection
+      # azure_client_secrets: $(azure_client_secrets)
+      # azure_tenant_id: $(azure_tenant_id)
+      backend_resource_group: $()
+      backend_storage_account_name: "gargash_dashboard_tfstate"
+      backend_storage_container_name: $(tfstate)
+      tf_backend_key: $(tfstate)
+      application_name: "application"
+      #azure_client_id: $(azure_client_id)
+
+  # staging environment
+  - template: templates/terragrunt_apply.yml
+    parameters:
+      environment: staging
+      module: base
+      subscription: TerraformDevConnection
+      # azure_client_secrets: $(azure_client_secrets)
+      # azure_tenant_id: $(azure_tenant_id)
+      # azure_client_id: $(azure_client_id)
+      backend_resource_group: $()
+      backend_storage_account_name: "gargash_dashboard_tfstate"
+      backend_storage_container_name: $(tfstate)
+      tf_backend_key: $(tfstate)
+      application_name: "base"
+
+  - template: templates/terragrunt_apply.yml
+    parameters:
+      environment: staging
+      module: applications
+      subscription: TerraformDevConnection
+      # azure_client_secrets: $(azure_client_secrets)
+      # azure_tenant_id: $(azure_tenant_id)
+      backend_resource_group: $()
+      backend_storage_account_name: "gargash_dashboard_tfstate"
+      backend_storage_container_name: $(tfstate)
+      tf_backend_key: $(tfstate)
+      application_name: "application"
+      # azure_client_id: $(azure_client_id)

@@ -1,0 +1,14 @@
+# ---
+# parameters:
+#   - name: environment
+#     type: string
+
+# jobs:
+#   - job: auth
+#     steps:
+#       - checkout: self
+#         displayName: 'auth'
+#         persistCredentials: true
+#       - task: CmdLine@2
+#         inputs:
+#           script: 'git config --global http.https://Gargash-AzureDevOps@dev.azure.com.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"'
