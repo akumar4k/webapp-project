@@ -1,0 +1,106 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+
+trigger:
+- groups
+
+pool:
+  vmImage: ubuntu-latest
+stages:
+- stage: TerraformValidate
+  jobs:
+    - job: TerraformValidateJob
+      continueOnError: false
+      steps:
+
+      - task: TerraformInstaller@2
+        displayName: TerraformInstaller
+        inputs:
+          terraformVersion: 'latest'
+      - task: TerraformCLI@2
+        displayName: terraform init
+        inputs:
+          command: 'init'
+          backendType: 'azurerm'
+          backendServiceArm: 'Service-Connection -gargasha-Azuredevops'
+          backendAzureRmTenantId: 'fa47dfbf-088d-4ccc-9834-3acf2a21a4a2'
+          backendAzureRmSubscriptionId: 'ed45ecf3-80f8-4e22-ab57-da9722f97b4b'
+          backendAzureRmResourceGroupName: 'gargash_intra_id'
+          backendAzureRmStorageAccountName: 'gargashintraidtfstate'
+          backendAzureRmContainerName: 'tfstate'
+          allowTelemetryCollection: false
+
+      - task: TerraformCLI@2
+        displayName: terraform Validate
+        inputs:
+         command: 'validate'
+         allowTelemetryCollection: false
+
+- stage: TFplan
+  condition: Succeeded('TerraformValidate')
+  dependsOn: TerraformValidate
+  jobs:
+  - job: Plan
+    steps:
+      - task: TerraformCLI@2
+        displayName: terraform init
+        inputs:
+          command: 'init'
+          backendType: 'azurerm'
+          backendServiceArm: 'Service-Connection -gargasha-Azuredevops'
+          backendAzureRmTenantId: 'fa47dfbf-088d-4ccc-9834-3acf2a21a4a2'
+          backendAzureRmSubscriptionId: 'ed45ecf3-80f8-4e22-ab57-da9722f97b4b'
+          backendAzureRmResourceGroupName: 'gargash_intra_id'
+          backendAzureRmStorageAccountName: 'gargashintraidtfstate'
+          backendAzureRmContainerName: 'tfstate'
+          allowTelemetryCollection: false
+      - task: TerraformCLI@2
+        displayName: Terraform Plan
+        inputs:
+         command: 'plan'
+         environmentServiceName: 'Service-Connection -gargasha-Azuredevops'
+         providerAzureRmSubscriptionId: 'ed45ecf3-80f8-4e22-ab57-da9722f97b4b'
+         allowTelemetryCollection: false
+
+- stage: tfdeploy
+  condition: Succeeded('TerraformValidate')
+  dependsOn: TerraformValidate
+  jobs:
+  - job: apply
+    steps:
+
+     - task: TerraformInstaller@2
+       displayName: TerraformInstaller
+       inputs:
+        terraformVersion: 'latest'
+     - task: TerraformCLI@2
+       displayName: terraform init
+       inputs:
+          command: 'init'
+          backendType: 'azurerm'
+          backendServiceArm: 'Service-Connection -gargasha-Azuredevops'
+          backendAzureRmTenantId: 'fa47dfbf-088d-4ccc-9834-3acf2a21a4a2'
+          backendAzureRmSubscriptionId: 'ed45ecf3-80f8-4e22-ab57-da9722f97b4b'
+          backendAzureRmResourceGroupName: 'gargash_intra_id'
+          backendAzureRmStorageAccountName: 'gargashintraidtfstate'
+          backendAzureRmContainerName: 'tfstate'
+          allowTelemetryCollection: false
+
+     - task: TerraformCLI@2
+       inputs:
+        command: 'plan'
+        environmentServiceName: 'Service-Connection -gargasha-Azuredevops'
+        providerAzureRmSubscriptionId: 'ed45ecf3-80f8-4e22-ab57-da9722f97b4b'
+        allowTelemetryCollection: false
+
+
+     - task: TerraformCLI@2
+       displayName: terraform Apply
+       inputs:
+         command: 'apply'
+         environmentServiceName: 'Service-Connection -gargasha-Azuredevops'
+         providerAzureRmSubscriptionId: 'ed45ecf3-80f8-4e22-ab57-da9722f97b4'
+         allowTelemetryCollection: false
